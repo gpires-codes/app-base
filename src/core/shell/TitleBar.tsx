@@ -2,12 +2,14 @@ import { Copy, Minus, Settings, Square, UserCircle2, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Link } from "@tanstack/react-router";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { isMac, isTauri, platformKind } from "@/core/platform";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
+import { useMatches } from "@tanstack/react-router";
 
 function WinButton({
   label,
@@ -38,6 +40,9 @@ function WinButton({
 
 export function TitleBar({ title }: { title?: string }) {
   const { t } = useTranslation();
+  const titleKey = useMatches({
+    select: (matches) => matches.at(-1)?.staticData?.titleKey,
+  });
   const [maximized, setMaximized] = useState(false);
   const enabled = isTauri && platformKind === "desktop";
 
@@ -66,6 +71,7 @@ export function TitleBar({ title }: { title?: string }) {
         className={cn("flex-1 truncate px-3", isMac && "pl-20")}
       >
         {title}
+        {(title && titleKey) && ` • ${t(titleKey)}`}
       </span>
 
       {/* Actions */}
