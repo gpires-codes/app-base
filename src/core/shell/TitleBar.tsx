@@ -27,7 +27,7 @@ function WinButton({
       title={label}
       onClick={onClick}
       className={cn(
-        "inline-flex h-full w-11 items-center justify-center text-muted-foreground transition-colors hover:bg-accent hover:text-foreground",
+        "inline-flex h-full w-11 items-center justify-center transition-colors hover:bg-accent hover:text-foreground",
         className,
       )}
     >
@@ -58,33 +58,32 @@ export function TitleBar({ title }: { title?: string }) {
   return (
     <header
       data-tauri-drag-region
-      className="flex h-7 shrink-0 select-none items-center justify-between border-b bg-background text-sm"
+      className="glass flex h-7 shrink-0 select-none items-center border-b text-sm text-muted-foreground [--glass-blur:32px] [--glass-opacity:40%]"
     >
       {/* Title */}
       <span
         data-tauri-drag-region
-        className={cn(
-          "flex-1 truncate px-3 text-muted-foreground",
-          isMac && "pl-20",
-        )}
+        className={cn("flex-1 truncate px-3", isMac && "pl-20")}
       >
         {title}
       </span>
 
       {/* Actions */}
-      <div className="flex gap-0.5 items-center justify-center">
+      <div className="mr-1 flex h-full items-center gap-0.5">
         <Button
-          className="text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          variant={"ghost"}
-          size={"icon-sm"}
+          disabled
+          variant="ghost"
+          size="icon-sm"
+          className="size-6 [&.active]:bg-accent/50"
         >
           <UserCircle2 />
         </Button>
 
         <Button
-          className="text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          variant={"ghost"}
-          size={"icon-sm"}
+          variant="ghost"
+          size="icon-sm"
+          className="size-6 [&.active]:bg-accent/50"
+          render={<Link to="/settings" />}
         >
           <Settings />
         </Button>
