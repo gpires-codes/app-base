@@ -3,8 +3,11 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getCurrentWindow } from "@tauri-apps/api/window";
+
+import { isMac, isTauri, platformKind } from "@/core/platform";
 import { cn } from "@/lib/utils";
-import { isMac, isTauri, platformKind } from "../platform";
+
+import { Button } from "@/components/ui/button";
 
 function WinButton({
   label,
@@ -33,7 +36,6 @@ function WinButton({
   );
 }
 
-/** Windows/Linux: botões próprios. macOS: semáforo nativo (titleBarStyle Overlay), só o espaço de arrastar. */
 export function TitleBar({ title }: { title?: string }) {
   const { t } = useTranslation();
   const [maximized, setMaximized] = useState(false);
@@ -58,6 +60,7 @@ export function TitleBar({ title }: { title?: string }) {
       data-tauri-drag-region
       className="flex h-7 shrink-0 select-none items-center justify-between border-b bg-background text-sm"
     >
+      {/* Title */}
       <span
         data-tauri-drag-region
         className={cn(
@@ -67,6 +70,27 @@ export function TitleBar({ title }: { title?: string }) {
       >
         {title}
       </span>
+
+      {/* Actions */}
+      <div className="flex gap-0.5 items-center justify-center">
+        <Button
+          className="text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          variant={"ghost"}
+          size={"icon-sm"}
+        >
+          <UserCircle2 />
+        </Button>
+
+        <Button
+          className="text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          variant={"ghost"}
+          size={"icon-sm"}
+        >
+          <Settings />
+        </Button>
+      </div>
+
+      {/* Win buttons in windows SO */}
       {!isMac && (
         <div className="flex h-full">
           <WinButton
