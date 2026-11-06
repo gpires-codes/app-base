@@ -1,6 +1,7 @@
+import { Copy, Minus, Settings, Square, UserCircle2, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Copy, Minus, Square, X } from "lucide-react";
+
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { cn } from "@/lib/utils";
 import { isMac, isTauri, platformKind } from "../platform";
@@ -55,7 +56,7 @@ export function TitleBar({ title }: { title?: string }) {
   return (
     <header
       data-tauri-drag-region
-      className="flex h-8 shrink-0 select-none items-center justify-between border-b bg-background text-sm"
+      className="flex h-7 shrink-0 select-none items-center justify-between border-b bg-background text-sm"
     >
       <span
         data-tauri-drag-region
