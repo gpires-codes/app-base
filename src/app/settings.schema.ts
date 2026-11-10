@@ -1,16 +1,19 @@
-import type { SettingsSchema } from "@/core/settings/types";
+import { Database, Monitor, SlidersHorizontal } from "lucide-react";
+
+import { defineSettings, type SettingsSchema } from "@/core/settings/types";
 
 /**
  * ÚNICO arquivo de settings que muda de app pra app.
  * label/description/title são CHAVES de tradução (src/locales/*.json).
  * Texto cru também funciona (vira ele mesmo se a chave não existir).
  */
-export const settingsSchema: SettingsSchema = {
+export const settingsSchema: SettingsSchema = defineSettings({
   version: 1,
   sections: [
     {
       id: "general",
       title: "settings.sections.general",
+      icon: SlidersHorizontal,
       fields: [
         {
           key: "theme",
@@ -39,6 +42,7 @@ export const settingsSchema: SettingsSchema = {
     {
       id: "system",
       title: "settings.sections.system",
+      icon: Monitor,
       fields: [
         {
           key: "autostart",
@@ -60,6 +64,7 @@ export const settingsSchema: SettingsSchema = {
     {
       id: "data",
       title: "settings.sections.data",
+      icon: Database,
       fields: [
         {
           key: "dataDir",
@@ -87,4 +92,8 @@ export const settingsSchema: SettingsSchema = {
       ],
     },
   ],
-};
+});
+
+export type SectionId = (typeof settingsSchema.sections)[number]["id"];
+export type SettingKey =
+  (typeof settingsSchema.sections)[number]["fields"][number]["key"];

@@ -7,7 +7,7 @@ interface Ctx {
   schema: SettingsSchema;
   values: Values;
   set: (key: string, value: unknown) => void;
-  reset: () => void;
+  reset: (sectionId?: string) => void;
 }
 
 const SettingsCtx = createContext<Ctx | null>(null);
@@ -54,7 +54,16 @@ export function SettingsProvider({
     (key: string, value: unknown) => commit({ ...valuesRef.current, [key]: value }),
     [commit],
   );
-  const reset = useCallback(() => commit(defaultsOf(schema)), [commit, schema]);
+  const reset = useCallback(
+    (sectionId?: string) => {
+      if (sectionId === undefined) {
+        commit(defaultsOf(schema));
+        return;
+      }
+      commit({ ...valuesRef.current, ...defaultsOf(schema, sectionId) });
+    },
+    [commit, schema],
+  );
 
   if (!values) return null; // carregando (é local, dura milissegundos)
   return <SettingsCtx.Provider value={{ schema, values, set, reset }}>{children}</SettingsCtx.Provider>;

@@ -35,8 +35,16 @@ export function validatorOf(f: Field): z.ZodTypeAny {
   }
 }
 
-export function defaultsOf(schema: SettingsSchema): Values {
-  return Object.fromEntries(allFields(schema).map((f) => [f.key, f.default]));
+export function defaultsOf(schema: SettingsSchema, sectionId?: string): Values {
+  const sections =
+    sectionId === undefined
+      ? schema.sections
+      : schema.sections.filter((section) => section.id === sectionId);
+  return Object.fromEntries(
+    sections.flatMap((section) =>
+      section.fields.map((field) => [field.key, field.default]),
+    ),
+  );
 }
 
 /** Config corrompida? Só o campo ruim volta pro default, o resto fica. */
